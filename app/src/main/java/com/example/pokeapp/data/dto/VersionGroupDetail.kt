@@ -1,0 +1,11 @@
+package com.example.pokeapp.data.dto
+
+import kotlinx.serialization.Serializable
+
+@Suppress("PLUGIN_IS_NOT_ENABLED")
+@Serializable
+data class VersionGroupDetail(
+    val level_learned_at: Int,
+    val move_learn_method: MoveLearnMethod,
+    val version_group: VersionGroup
+)
