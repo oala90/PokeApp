@@ -13,10 +13,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DomainModule {
 
-    @Singleton
-    @Provides
-    fun provideGetPokemonDetailsByNameUseCase(
-        repository: PokemonRepository,
-        background: CoroutineDispatcher
-    ) = GetPokemonDetailsByNameUseCase(repository, background)
+//    @Singleton
+//    @Provides
+//    fun provideGetPokemonDetailsByNameUseCase(
+//        repository: PokemonRepository,
+//        background: CoroutineDispatcher
+//    ) = GetPokemonDetailsByNameUseCase(repository, background)
 }

@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Suppress("PLUGIN_IS_NOT_ENABLED")
 @Serializable
 data class Emerald(
-    val front_default: String,
-    val front_shiny: String
+    val front_default: String?,
+    val front_shiny: String?
 )

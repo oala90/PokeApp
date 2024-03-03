@@ -4,6 +4,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -72,7 +73,7 @@ dependencies {
 //    dagger hilt
     implementation ("androidx.hilt:hilt-work:1.2.0")
     implementation ("com.google.dagger:hilt-android:2.49")
-    ksp("com.google.dagger:hilt-compiler:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
     implementation ("androidx.room:room-ktx:2.6.1")
 //    Navigation Compose
     implementation("androidx.navigation:navigation-compose:$2.7.7")

@@ -1,7 +1,6 @@
 package com.example.pokeapp.di
 
 import com.example.pokeapp.data.remote.api.PokemonService
-import com.example.pokeapp.framework.AnyListSerializer
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -38,9 +37,6 @@ object RemoteModule {
                 Json {
                     prettyPrint = true
                     isLenient = true
-                    serializersModule = SerializersModule {
-                        contextual(AnyListSerializer)
-                    }
                 }
             )
         }
