@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,17 +23,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.pokeapp.R
 import com.example.pokeapp.domain.entities.PokemonEntity
 import com.example.pokeapp.presentation.actions.PokemonActions
-import com.example.pokeapp.presentation.icons.rememberQuestionMark
+import com.example.pokeapp.presentation.images.icons.rememberQuestionMark
 import com.example.pokeapp.presentation.validation.StateValidation
 import com.example.pokeapp.presentation.visualtransformation.DigitLimitTransformation
-
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -69,8 +71,9 @@ fun PokemonSearchView(
         ) {
             Text(
                 text = pokemonObjEnt?.name ?: "Pokemon",
-                modifier = Modifier.padding(8.dp)
-
+                modifier = Modifier.padding(8.dp),
+                fontFamily = FontFamily.Cursive,
+                fontSize = 50.sp
             )
 
             val pokemonImage = pokemonObjEnt?.sprites?.front_default
@@ -83,7 +86,7 @@ fun PokemonSearchView(
                 )
             } else {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.drawable.free_poke_ball_vector),
                     contentDescription = "Default Pokemon Image",
                     modifier = Modifier.size(200.dp)
                 )
@@ -94,9 +97,11 @@ fun PokemonSearchView(
                     TextField(
                         value = currentPokemonName,
                         onValueChange = {
-                            onChangedPokemonName(PokemonActions.OnNameChanged(it))
-                            isClickedPokemonNameSearchButton(false)
-                            onPokemonNameValidation(it)
+                            if(it.length <= 10) {
+                                onChangedPokemonName(PokemonActions.OnNameChanged(it))
+                                isClickedPokemonNameSearchButton(false)
+                                onPokemonNameValidation(it)
+                            }
                         },
                         maxLines = 1,
                         visualTransformation = DigitLimitTransformation(10),
@@ -148,10 +153,6 @@ fun PokemonSearchView(
                 Text(text = "Buscar")
             }
 
-            if(isLoadingState) {
-                CircularProgressIndicator()
-            }
-
             if(isDialogVisible) {
                 ShowMessageDialog(
                     title = "Error",
@@ -182,6 +183,10 @@ fun PokemonSearchView(
             ) {
                 Text(text = "Limpiar")
             }
+        }
+
+        if(isLoadingState) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
         }
     }
 }

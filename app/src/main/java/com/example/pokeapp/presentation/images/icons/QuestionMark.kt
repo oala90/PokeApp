@@ -1,4 +1,4 @@
-package com.example.pokeapp.presentation.icons
+package com.example.pokeapp.presentation.images.icons
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
