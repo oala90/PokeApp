@@ -11,9 +11,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.pokeapp.presentation.actions.PokemonActions
 import com.example.pokeapp.presentation.ui.theme.PokeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +44,9 @@ class MainActivity : ComponentActivity() {
                            LaunchedEffect(Unit) {
                                myViewModel.resetValidationStates()
                                myViewModel.resetPokemonResultState()
-
+                               myViewModel.onClearPokemonObj()
+                               myViewModel.clickedPokemonNameSearchButton(false)
+                               myViewModel.setPokemonTextField()
                            }
 
                             val pokemonObj by myViewModel.pokemonObject.collectAsState()
@@ -82,6 +86,61 @@ class MainActivity : ComponentActivity() {
                                 isLoadingState = pokemonIsLoadingState,
                                 onResetErrorMessageFlag = {
                                     myViewModel.setErrorMessageFlag()
+                                },
+                                navigationToHistoryView = {
+                                    myViewModel.getPokemonListDB()
+                                    navController.navigate("HistoryView")
+                                }
+                            )
+                        }
+                        composable("HistoryView") {
+                            LaunchedEffect(Unit) {
+                                myViewModel.getPokemonListDB()
+                                myViewModel.setIsSelectedFun()
+                            }
+                            val pokemonListDB by myViewModel.pokemonListDB.collectAsState()
+                            val isSelected by myViewModel.isSelectedForm.collectAsState()
+
+                            HistoryView(
+                                pokemonListDB = pokemonListDB,
+                                isSelectedItem = isSelected,
+                                onIsSelectedChanged = {
+                                    myViewModel.isSelectedFun(it)
+                                },
+                                deletePokemon = {
+                                    myViewModel.deletePokemonOnDb(it)
+                                    myViewModel.setIsSelectedFun()
+                                },
+                                updatePokemon = {
+                                    navController.navigate("EditHistoryView/${isSelected?.id}/")
+                                },
+                                goBackEvent = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "EditHistoryView/{id}/",
+                            arguments = listOf(navArgument("id") { type = NavType.IntType })
+                        ) {
+                            navBackStackEntry ->
+                            val pokeId = navBackStackEntry.arguments?.getInt("id")
+                            val pokeEditForm by myViewModel.editFormText.collectAsState()
+
+                            LaunchedEffect(Unit) {
+                                myViewModel.getPokemonByIdOnDB(pokeId)
+                            }
+
+
+                            EditHistoryView(
+                                editIdValue = pokeEditForm.editId,
+                                onEditIdChange = myViewModel::onFieldEditFormChange,
+                                editNameValue = pokeEditForm.editName,
+                                onEditNameChange = myViewModel::onFieldEditFormChange,
+                                updatePokemonEvent = {
+                                    myViewModel.updatePokemonOnDB(pokeEditForm.editId, pokeEditForm.editName)
+                                    navController.popBackStack()
                                 }
                             )
                         }

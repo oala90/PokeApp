@@ -1,6 +1,6 @@
 package com.example.pokeapp.domain.usecases.pokemon
 
-import com.example.pokeapp.domain.entities.PokemonEntity
+import com.example.pokeapp.domain.modelentities.entities.PokemonEntity
 import com.example.pokeapp.domain.repositories.PokemonRepository
 import com.example.pokeapp.domain.usecases.base.UseCase
 import kotlinx.coroutines.CoroutineDispatcher

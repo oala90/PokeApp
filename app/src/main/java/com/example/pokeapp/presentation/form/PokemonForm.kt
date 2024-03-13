@@ -1,5 +1,5 @@
 package com.example.pokeapp.presentation.form
 
 data class PokemonForm(
-    val name: String = ""
+    var name: String = ""
 )

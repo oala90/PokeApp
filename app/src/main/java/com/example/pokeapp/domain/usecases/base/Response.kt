@@ -11,7 +11,7 @@ sealed class Response<out T> {
             is Failure -> onFailure(error)
         }
 
-    suspend fun subscribe(onSuccess: suspend (T) -> Any = {}, onFailure: suspend (Exception) -> Any = {}): Any =
+    suspend fun subscribe(onSuccess: suspend (T) -> Any = {}, onFailure: (Exception) -> Unit = {}): Any =
         when (this) {
             is Success -> onSuccess(response)
             is Failure -> onFailure(error)

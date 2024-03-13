@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.pokeapp.R
-import com.example.pokeapp.domain.entities.PokemonEntity
+import com.example.pokeapp.domain.modelentities.entities.PokemonEntity
 import com.example.pokeapp.presentation.actions.PokemonActions
 import com.example.pokeapp.presentation.images.icons.rememberQuestionMark
 import com.example.pokeapp.presentation.validation.StateValidation
@@ -53,7 +53,8 @@ fun PokemonSearchView(
     errorMessageState: String?,
     errorMessageFlag: Boolean,
     isLoadingState: Boolean,
-    onResetErrorMessageFlag: () -> Unit
+    onResetErrorMessageFlag: () -> Unit,
+    navigationToHistoryView: () -> Unit
 ) {
     var isHintDialogVisible by remember { mutableStateOf(false) }
     var isDialogVisible by remember { mutableStateOf(false) }
@@ -150,7 +151,7 @@ fun PokemonSearchView(
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Buscar")
+                Text(text = "Search")
             }
 
             if(isDialogVisible) {
@@ -181,12 +182,25 @@ fun PokemonSearchView(
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Limpiar")
+                Text(text = "Clear")
+            }
+
+            Button(
+                onClick = {
+                    navigationToHistoryView()
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(text = "History")
             }
         }
 
         if(isLoadingState) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
         }
     }
 }
@@ -209,6 +223,7 @@ fun PokemonSearchViewPreview() {
         "",
         errorMessageFlag = false,
         isLoadingState = false,
-        onResetErrorMessageFlag = {}
+        onResetErrorMessageFlag = {},
+        {}
     )
 }
